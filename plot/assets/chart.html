@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Ninja Bot - Trade Results</title>
+    <!-- 用于从内容分发网络（CDN）加载Plotly图表库的最新版本。Plotly是一个强大的绘图库，可以用于创建各种交互式图表和数据可视化。 -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <script defer src="/assets/chart.js"></script>
+  <style>
+    html {
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ol,
+    ul {
+      margin: 0;
+      padding: 0;
+      font-weight: normal;
+      font-family: sans-serif;
+    }
+
+    ol,
+    ul {
+      display: inline-block;
+      list-style: none;
+    }
+
+    .menu {
+      margin: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      font-family: sans-serif;
+      border-radius: 5px;
+      padding: 10px 15px;
+      text-decoration: none;
+      margin: 0;
+      color: #252525;
+      background-color: #ddd;
+      box-shadow: 0 5px 0 0 #ccc;
+    }
+
+    .btn:hover {
+      background-color: #eee;
+    }
+
+    .btn:active {
+      transform: translate(0px, 5px);
+      -webkit-transform: translate(0px, 5px);
+      box-shadow: 0px 1px 0px 0px;
+    }
+
+    .blue {
+      color: #fff;
+      background-color: #55acee;
+      box-shadow: 0px 5px 0px 0px #3c93d5;
+    }
+
+    .blue:hover {
+      background-color: #6fc6ff;
+    }
+
+    #graph {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 60px;
+    }
+
+    ul {
+      width: 100%;
+    }
+
+    li {
+      display: inline-block;
+      list-style-type: none;
+      padding-right: 20px;
+      float: left;
+    }
+
+    li:last-child {
+      float: right;
+    }
+  </style>
+  <body>
+    <nav class="menu">
+      <ul>
+        <!-- 
+        是在模板语法里面遍历.pairs，就相当于遍历err := c.indexHTML.Execute(w, map[string]interface{}{
+        "pair":  pair,
+        "pairs": pairs,
+         })pairs键
+        -->
+        {{range $val := .pairs}}
+        <li>
+          <!-- 如果变量 $.pair(查看的交易对)等于变量 $val(列表中的交易对)，如果一个<a>标签原本的class属性值为btn，当满足条件后，class属性将变为btn blue，  btn是名称 $.pair在模板文件里面-->
+          <a
+            class="btn {{if eq $.pair $val}}blue{{end}}"
+            href="/?pair={{ $val }}"
+            >{{ $val }}</a
+          >
+        </li>
+        {{end}}
+        <li>
+          <a
+                  class="btn"
+                  href="/history?pair={{ $.pair }}"
+          >History</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="graph"></div>
+  </body>
+</html>
+<!-- 
+  第二个<li>提供了一个固定的链接，用于查看当前选中交易对的历史数据，而第一个<li>则是一个动态生成的链接列表，用于导航到每个可用交易对的当前详情页面，并且能够视觉上突出显示当前正在查看的交易对。
+
+  通过组合使用Plotly库和chart.js文件中的JavaScript代码，就可以在页面上的#graph容器中动态地渲染出K线图或其他类型的图表。
+ -->
